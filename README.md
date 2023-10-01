@@ -2,16 +2,10 @@
 
 # Preamble
 
-This is an example of a Clean Architecture implementation.
+This is an example of a Clean Architecture implementation. It is a continuation of
+this code: https://github.com/paulgries/LoginCleanArchitecture
 
-We keep showing you the Clean Architecture picture, the green, pink, yellow, and
-white picture with all the boxes and arrow. We will call this image the _"CA
-Engine"_.
 
-Pro tip: as you read this document, you'll want to look at the CA Engine a lot.
-Pull it up on your phone if you don't have an external monitor. Or arrange your
-laptop windows side by side. Or find the Engine in the textbook, if you have
-a hard copy.
 
 ## The Java implementation
 

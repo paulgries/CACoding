@@ -18,7 +18,8 @@ public class SignupState {
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
-    public SignupState() {}
+    public SignupState() {
+    }
 
     public String getUsername() {
         return username;
@@ -66,5 +67,14 @@ public class SignupState {
 
     public void setRepeatPasswordError(String repeatPasswordError) {
         this.repeatPasswordError = repeatPasswordError;
+    }
+
+    @Override
+    public String toString() {
+        return "SignupState{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", repeatPassword='" + repeatPassword + '\'' +
+                '}';
     }
 }
