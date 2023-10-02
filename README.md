@@ -1,6 +1,6 @@
-# Clean Architecture [30 minute read]
+# Clean Architecture
 
-# Preamble
+## Preamble
 
 This is a 2-week coding exercise.
 
@@ -95,4 +95,11 @@ lab: it has one more method. This is because it implements an interface,
 `LoginUserDataAccessInterface`.
 
 **Thought question:** What is the method that was added?
+
+## Adding a use case interaction
+
+The `Log out` button doesn't work. Also, there is no way to delete a user.
+
+This week's coding exercise has you add a "delete all users" button to the
+Signup screen.
 
