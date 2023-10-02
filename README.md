@@ -2,14 +2,32 @@
 
 # Preamble
 
-This is an example of a Clean Architecture implementation. It is a continuation of
-this code: https://github.com/paulgries/LoginCleanArchitecture
+This is a 2-week coding exercise.
+
+You will extend the Clean Architecture implementation to add a use case. It is a
+continuation of this code: https://github.com/paulgries/LoginCleanArchitecture
+
+We have:
+
+* implemented the changes from this week's lab
+* added the login use case
+* added a "logged in" View and View Model (showing the username), but no
+  Interator or Controller or Presenter.
+* created subpackages for the `login`, `signup`, and `logged_in` code 
+* made some style and design change to the code
+
+To explore the changes, run "git log" in a Terminal, or choose menu item `Git —>
+Show Git Log`. Click and explore! You can even see this README evolve.
+
+## Packaging
+
+Take a moment to look at the package structure in `src`. There are packages for
+the layers of CA, and in some of them are packages for each of the three use
+cases.
+
+## The Login use case
 
 
-
-## The Java implementation
-
-These packages correspond to the various areas of the program:
 
 * `data_access`
 * `entity`
