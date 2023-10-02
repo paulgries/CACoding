@@ -1,4 +1,6 @@
-package interface_adapter;
+package interface_adapter.login;
+
+import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -9,8 +11,8 @@ public class LoginViewModel extends ViewModel {
     public final String USERNAME_LABEL = "Enter username";
     public final String PASSWORD_LABEL = "Enter password";
 
-    public final String LOGIN_BUTTON_LABEL = "Log in";
-    public final String CANCEL_BUTTON_LABEL = "Cancel";
+    public static final String LOGIN_BUTTON_LABEL = "Log in";
+    public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
     private LoginState state = new LoginState();
 

@@ -1,149 +1,134 @@
 # Clean Architecture
 
-# Preamble
+## Preamble
 
-This is an example of a Clean Architecture implementation. It is a continuation of
-this code: https://github.com/paulgries/LoginCleanArchitecture
+This is a 2-week coding exercise.
 
+You will extend the Clean Architecture implementation to add a use case. It is a
+continuation of this code: https://github.com/paulgries/LoginCleanArchitecture
 
+We have:
 
-## The Java implementation
+* implemented the changes from this week's lab
+* added the login use case
+* added a "logged in" View and View Model (showing the username), but no
+  Interactor or Controller or Presenter.
+* created subpackages for the `login`, `signup`, and `logged_in` code 
+* made some style and design change to the code
 
-These packages correspond to the various areas of the program:
+To explore the changes, run "git log" in a Terminal, or choose menu item `Git —>
+Show Git Log`. Click and explore! You can even watch this README evolve.
 
-* `data_access`
-* `entity`
-* `interface_adapter`
-* `use_case`
-* `view`
+## Packaging
 
-There is one more package, `app`, that contains classes whose job it is to build
-the CA Engine and start it running.
+Take a moment to look at the package structure in `src`. There are packages for
+the layers of CA, and in some of these packages are "subpackages" for each of the
+three use cases, `login`, `signup`, and `logged_in`.
 
-In most cases, each class is named according to its role in the CA Engine.
+These packages don't have subpackages: `data_access`, `entity`, `view`, and
+`app`.
 
-### Entities
+**Thought question:** Why don't these have use-case-specific subpackages?
 
-These objects represent the fundamental data for the application. The classes
-are named after concepts from the problem domain, like "bank account", "personal
-profile", and "game board".
+## A note on English: 2-word verb phrases vs. 1-word nouns
 
-Most entities have a corresponding factory class. These classes manufacture
-entities. See the Factory Pattern. The factories are mostly used in the data
-access layer.
+"Sign up" is a verb phrase and "signup" is a noun. That generalizes: "check in"
+vs "checkin", "log in" vs "login". Two words for the verb phrase, 1 word for the
+noun phrase.
 
-### Data Access
+For example, to complete a login, you need to log in.
 
-These Data Access Objects (DAO) store and retrieve entity data using files or a
-database. They mostly do four things: _create_, _read_, _update_, and _delete_
-(CRUD).
+In "the login process", "login" is a noun acting as an adjective to describe
+"process". "Basketball coach" is another example of this English construct.
 
-Often, there is one DAO object per entity, and that DAO reads and writes a
-single file where each row contains information about one entity.
+## Comparing the signup and login code
 
-DAOs have a method that returns an entity object. There is often a map of keys
-to entities, where the key is some kind of id.  When the main method creates a
-DAO, it injects any necessary entity factories.
+In lab this week, you worked with a single user interaction. We have added a
+second use case for login. Let's compare the two use cases.
 
-### Use Case Interactors
+### Controllers
 
-Use Case Interactor objects each do a single (possibly complicated) thing: given
-data supplied by the user, do what the user wants with that data, then gather
-any resulting data that the user wants to look at. That might be the result of a
-bank transaction, updated data on your profile, or a move on a game board.
+In IntelliJ, right-click on `LoginController` and select `Open in Right
+Split`.
 
-The data supplied by the user is gathered by the `Controller`, which tells the
-`UseCaseInteractor` to do its job. The `Controller` passes in `InputData`, which
-comes from the user through the `View`.
+Now double-click on `SignupController`. When you do, you will see the two
+Controllers side by side. They are identical in structure, differing only in the
+details.
 
-The state of the entities will often change as a result of a use case
-interaction: some may be created, some may be deleted, and some may be mutated. 
-`UseCaseInteractor`s use DAOs to get entities. When the main program creates an
-interactor, it injects any necessary DAOs.
+### Interactors
 
-If the `UseCaseInteractor` needs to look up data -- perhaps fetch a bank account
-balance -- then it will call a method in the appropriate DAO, which will look
-up the required data and return an Entity containing it.
+Now compare `LoginInteractor` and `SignupInteractor` side by side. (You can drag
+tabs around if you like.)
 
-When the use case interaction is complete, the `UseCaseInteractor` will create
-an `OutputData` object containing any new information that should be represented
-in the `ViewModel`, and tells its `Presenter` object to update its `ViewModel`.
+**Thought question:** Why doesn't the `LoginInteractor` have a `UserFactory`?
 
-When the main program instantiates a `UseCaseInteractor`, it injects a
-`Presenter`.
+#### Remnants of a bug
 
-### View
+Compare the two `execute` methods carefully. Look at the variable types
+(including the instance variables) and compare them to the CA Engine so you
+understand which boxes are relevant to the Interactors.
 
-Classes in the `view` package manage the user interface. `View` classes describe
-different screens of the application. The `ViewManager`'s job is to swap which
-screen is showing.
+You'll notice that the `LoginInteractor` starts by extracting
+the login information from the Input Data object, and that on line 22 the code
+also gets the password before doing the comparison. In the Signup version, it's
+all done in one step.
 
-Most `View` objects have a corresponding `ViewModel` object in the
-`interface_adaptor` package. Each `View` will listen to its `ViewModel`, and
-react when it hears that there have been changes.
+The Login code was split up like this because there was a bug and it wasn't
+obvious what was causing it, even when we used the debugger. We isolated the bug
+(meaning, we found out what the problem was) by doing one step at a time.
 
-When the main program creates a `View`, it injects the `ViewModel`.
+**Thought question:** Which version do you find easier to understand, the Signup
+one or the Login one?
 
-When the user performs an action, perhaps clicking a button, it causes a call on
-an _action method_. When you create a button, you need to tell it to call an
-`actionPerformed` method when it's clicked. Each button has its own
-`actionPerformed` method. There are similar action methods for keystrokes and so on.
+**Thought question:** Maybe the problem is with the debugging tools, maybe the
+IDE doesn't allow easy exploration of expressions?
 
-Each `actionPerformed` method calls a method in a `Controller` object to trigger
-a use case interaction. When the main program builds the `View`, it injects any
-necessary `Controller`s.
+### Interactor assets
 
-When an action method calls its `Controller` method, it passes in data the user
-entered --- usually numbers and text, from text fields and so on.
+Each Interactor has an InputBoundary, InputData, OutputBoundary, and
+OutpuData. They're all quite short. Compare them.
 
-### Interface Adapters
+## Data Access Object
 
-The `ViewModel` objects contain all data that is shown to the user. There is
-usually one `ViewModel` per `View`, and one for the `ViewManager`. These view
-managers know the objects that are listening to them, and tell them when the
-data changes. (When we say "tell", we mean "call a method".)
+There is only one DAO, the `FileUserDataAccessObject`. It has changed since the
+lab: it has one more method. This is because it implements an interface,
+`LoginUserDataAccessInterface`.
 
-There is typically one `Controller`, one `Presenter`, and one
-`UseCaseInteractor` per action method.
+**Thought question:** What is the method that was added?
 
-`Controller` objects are given raw data from the `View`, and their job is to
-make the data useful for a use case interaction. They might receive
-`"26/04/2024"` as a `String` and instantiate a `LocalDateTime` object. Or they
-might receive two integers, `42` and `55`, and create a `Currency` object
-representing $42.55. ªOften, a `String` or number needs no such conversion, and
-is left as-is.)
+## Adding a use case interaction [for credit]
 
-When the `Controller` has converted all the data, it put it into an Input Data
-object that contains the information needed to execute the use case. The
-`Controller` calls a method in the `UseCaseInteractor` to execute the use case
-interaction.
+There is currently no way to delete users from the sytem.
 
-`Controller`s and `Presenter`s never use entities.
+This week's coding exercise has you add a "delete all users" button to the
+Signup screen.
 
-When a `Controller` is instantiated, the main program injects a
-`UseCaseInteractor` object.
+Look for "TODO" in the `SignupView` class and follow the instructions.
 
-A `Presenter`'s job is to update its `ViewModel`, which will tell the `View`
-that there has been an update.
+Next, look at the empty classes and interfaces in the "clear_users" packages.
+Fill them in!
 
-## A note about dependencies
+For this use case interaction, there is no data to give to the
+`ClearController`, and no data to put into `ClearInputData`.
 
-The `UseCaseInteractor` is the heart of your program. Everything else exists to
-support it. If you decide to switch from using plain-text files to using a
-database, _the `UseCaseInteractor` should not change at all_.
+** Thought question:**  You need that Controller for CA, but do you need the
+InputData object?
 
-To accomplish this, the `UseCaseInteractor` publishes a `DataAccessInterface`
-specifying the operations it needs to save and retrieve data. The DAO class
-implements this interface.
+Make a decision either way and implement your decision. There
+is no wrong choice.
 
-Remember that the main program injects the `DAO` into the `UseCaseInteractor`.
-To change how you're persisting data, you would write a new `DAO` class that also
-implements the `DataAccessInterface`, and then change the main program so that
-it injects that `DAO` instead.
+**See MarkUs for details about what you are expected to hand in.**
 
-That's also why the `OutputBoundary` exists: if you want to change the user
-interface (from, say, Java Swing to a web application), you would need to write
-all new `View`s and perhaps new `ViewModel`s and `Controller`s and `Presenter`s.
+## Extra Practice
 
-The `InputBoundary` exists to make it clear how a `Controller` should use the
-`UseCaseInteractor`.
+You likely noticed that other features of the program aren't working yet either.
+For example:
+- the `Log out` button doesn't work once a user logs in
+- the `Cancel` buttons don't actually cancel anything
+- the program isn't doing some expected checks for password length or username requirements
+- the program doesn't have an overall menu to choose between signing up and logging in
+- and many more!
+
+If you feel you need more practice with Clean Architecture before getting started on
+the project with your team, we encourage you to try adding some of these other bits
+of functionality to this program.
