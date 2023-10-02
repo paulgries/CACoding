@@ -103,3 +103,17 @@ The `Log out` button doesn't work. Also, there is no way to delete a user.
 This week's coding exercise has you add a "delete all users" button to the
 Signup screen.
 
+Look for "TODO" in the `SignupView` class and follow the instructions.
+
+Next, look at the empty classes and interfaces in the "clear_users" packages.
+Fill them in!
+
+For this use case interaction, there is no data to give to the
+`ClearController`, and no data to put into `ClearInputData`.
+
+** Thought question:**  You need that Controller for CA, but do you need the
+InputData object?
+
+Make a decision either way and implement your decision. There
+is no wrong choice.
+
