@@ -12,7 +12,7 @@ We have:
 * implemented the changes from this week's lab
 * added the login use case
 * added a "logged in" View and View Model (showing the username), but no
-  Interator or Controller or Presenter.
+  Interactor or Controller or Presenter.
 * created subpackages for the `login`, `signup`, and `logged_in` code 
 * made some style and design change to the code
 
@@ -22,10 +22,10 @@ Show Git Log`. Click and explore! You can even watch this README evolve.
 ## Packaging
 
 Take a moment to look at the package structure in `src`. There are packages for
-the layers of CA, and in some of these packages are subpackages for each of the
+the layers of CA, and in some of these packages are "subpackages" for each of the
 three use cases, `login`, `signup`, and `logged_in`.
 
-These packages don't have subpackages: `data_access`, `entity`', `view`, and
+These packages don't have subpackages: `data_access`, `entity`, `view`, and
 `app`.
 
 **Thought question:** Why don't these have use-case-specific subpackages?
@@ -51,7 +51,7 @@ second use case for login. Let's compare the two use cases.
 In IntelliJ, right-click on `LoginController` and select `Open in Right
 Split`.
 
-Now double click on `SignupController`. When you do, you will see the two
+Now double-click on `SignupController`. When you do, you will see the two
 Controllers side by side. They are identical in structure, differing only in the
 details.
 
@@ -96,9 +96,9 @@ lab: it has one more method. This is because it implements an interface,
 
 **Thought question:** What is the method that was added?
 
-## Adding a use case interaction
+## Adding a use case interaction [for credit]
 
-The `Log out` button doesn't work. Also, there is no way to delete a user.
+There is currently no way to delete users from the sytem.
 
 This week's coding exercise has you add a "delete all users" button to the
 Signup screen.
@@ -117,3 +117,18 @@ InputData object?
 Make a decision either way and implement your decision. There
 is no wrong choice.
 
+**See MarkUs for details about what you are expected to hand in.**
+
+## Extra Practice
+
+You likely noticed that other features of the program aren't working yet either.
+For example:
+- the `Log out` button doesn't work once a user logs in
+- the `Cancel` buttons don't actually cancel anything
+- the program isn't doing some expected checks for password length or username requirements
+- the program doesn't have an overall menu to choose between signing up and logging in
+- and many more!
+
+If you feel you need more practice with Clean Architecture before getting started on
+the project with your team, we encourage you to try adding some of these other bits
+of functionality to this program.
