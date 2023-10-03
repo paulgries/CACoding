@@ -111,7 +111,7 @@ Fill them in!
 For this use case interaction, there is no data to give to the
 `ClearController`, and no data to put into `ClearInputData`.
 
-** Thought question:**  You need that Controller for CA, but do you need the
+**Thought question:**  You need that Controller for CA, but do you need the
 InputData object?
 
 Make a decision either way and implement your decision. There
