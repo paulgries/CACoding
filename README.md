@@ -98,10 +98,10 @@ lab: it has one more method. This is because it implements an interface,
 
 ## Adding a use case interaction [for credit]
 
-There is currently no way to delete users from the sytem.
+There is currently no way to delete users from the system.
 
 This week's coding exercise has you add a "delete all users" button to the
-Signup screen.
+Signup screen and implement the logic for it.
 
 Look for "TODO" in the `SignupView` class and follow the instructions.
 
