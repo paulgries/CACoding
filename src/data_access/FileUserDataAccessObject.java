@@ -2,16 +2,16 @@ package data_access;
 
 import entity.User;
 import entity.UserFactory;
+import use_case.clear_users.ClearUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
-public class FileUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface {
+public class FileUserDataAccessObject
+        implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, ClearUserDataAccessInterface {
 
     private final File csvFile;
 
@@ -96,4 +96,21 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
         return accounts.containsKey(identifier);
     }
 
+    @Override
+    public List<User> extractUsers() {
+        List<User> formerUsers = new ArrayList<>(accounts.values());
+        accounts.clear();
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(csvFile, false));
+            writer.write(String.join(",", headers.keySet()));
+            writer.newLine();
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occured, check files");
+        }
+        return formerUsers;
+    }
 }
